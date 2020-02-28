@@ -28,14 +28,15 @@ public class Member {
 	@Id
 	@Column(name="Idx")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idx;
+	private Long idx;
 	
 	@Column(name="UserEmail", nullable = false, unique = true)
 	private String userEmail;
 	
 	@Column(name="UserPassword", nullable=false)
 	private String userPassword;
-	
+	@Column(name="UserName")
+	private String userName;
 	@Column(name="createdAt")
 	@CreationTimestamp
 	private Timestamp createdAt;

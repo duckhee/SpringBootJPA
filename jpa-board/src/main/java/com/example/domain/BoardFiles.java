@@ -27,16 +27,21 @@ public class BoardFiles {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="Idx")
 	private Long idx;
+	
 	@Column(name="fileSize", nullable = false)
 	private Float size;
+	
 	@Column(name="filePath", nullable = false)
 	private String path;
+	
 	//TODO Change Enum Type
 	@Column(name="fileType", nullable = false)
 	private String type;
+	
 	@CreationTimestamp
 	@Column(name="createdAt")
 	private Timestamp createdAt;
+	
 	@UpdateTimestamp
 	@Column(name="udpatedAt")
 	private Timestamp updatedAt;

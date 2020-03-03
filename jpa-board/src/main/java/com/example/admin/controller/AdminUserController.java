@@ -2,8 +2,11 @@ package com.example.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.domain.Member;
 
 import lombok.extern.java.Log;
 
@@ -16,6 +19,18 @@ public class AdminUserController {
 	public String MainPage() {
 		log.info("User Main Page");
 		return "redirect:/admin/users/profile";
+	}
+	
+	@GetMapping(value="/registe")
+	public String RegistePage(@ModelAttribute("vo")Member user) {
+		log.info("User Registe Page");
+		return "admin/user/registe";
+	}
+	
+	@PostMapping(value="/registe")
+	public String RegisteDo() {
+		log.info("User Registe Do");
+		return "redirect:/admin/usersh/login";
 	}
 	
 	@GetMapping(value="/login")

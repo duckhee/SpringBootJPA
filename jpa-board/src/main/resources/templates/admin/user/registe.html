@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Registration Page</title>
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/admin/img/logo_iot.png}" >
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -12,6 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- sweetalert2 -->
+  <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
   <!-- Theme style -->
   <link rel="stylesheet" th:href="@{/admin/dist/css/AdminLTE.min.css}">
   <!-- iCheck -->
@@ -27,28 +30,28 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a th:href="@{/admin}"><b>Admin</b>LTE</a>
   </div>
 
   <div class="register-box-body">
     <p class="login-box-msg">Register a new membership</p>
 
-    <form action="../../index.html" method="post">
+    <form name="Create" id="Create">
     	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
       <div class="form-group has-feedback">
-        <input type="text" th:value="${vo.userName}"class="form-control" placeholder="Full name">
+        <input type="text" id="UserName" name="UserName" th:value="${vo.userName}"class="form-control" placeholder="Full name">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" th:value="${vo.userEmail}"class="form-control" placeholder="Email">
+        <input type="email" id="UserEmail" name="UserEmail" th:value="${vo.userEmail}"class="form-control" placeholder="Email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" th:value="${vo.userPassword}" class="form-control" placeholder="Password">
+        <input type="password" id="UserPassword" name="UserPassword" th:value="${vo.userPassword}" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Retype password">
+        <input type="password" id="UserCPassword" name="UserCPassword" class="form-control" placeholder="Retype password">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="row">
@@ -61,7 +64,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+          <button type="button" class="btn btn-primary btn-block btn-flat" id="CreateBtn" name="CreateBtn">Register</button>
         </div>
         <!-- /.col -->
       </div>
@@ -75,7 +78,7 @@
         Google+</a>
     </div>
 
-    <a href="login.html" class="text-center">I already have a membership</a>
+    <a th:href="@{/admin/usera/login}" class="text-center">I already have a membership</a>
   </div>
   <!-- /.form-box -->
 </div>
@@ -87,6 +90,8 @@
 <script th:src="@{/admin/bootstrap/js/bootstrap.min.js}"></script>
 <!-- iCheck -->
 <script th:src="@{/admin/plugins/iCheck/icheck.min.js}"></script>
+<!-- sweetalert2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
 <script>
   $(function () {
     $('input').iCheck({
@@ -94,6 +99,125 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
     });
+    /** Reg Email */
+    function reEmail(_Email){
+        let re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(_Email);
+    }
+    /** Name Check */
+    function NameCheck(){
+        let Name = $("#UserName").val();
+        if(Name == "" || Name == null){
+            swal.fire({
+                type:'warning',
+                title:'Name is Empty'
+            });
+            return false;
+        }
+        if(Name.indexOf(' ') !== -1){
+            swal.fire({
+                type:'warning',
+                title:'Name do not have space value'
+            });
+            return false;
+        }
+        return true;
+    }
+    /** Email Check */
+    function EmailCheck(){
+        let Email = $("#UserEmail").val();
+        if(Email === "" || Email === null){
+            swal.fire({
+                type:'warning',
+                title:'Email is Empty'
+            });
+            return false;
+        }
+        if(!reEmail(Email)){
+            swal.fire({
+                type:'warning',
+                title:'Not Email Type'
+            });
+            return false;
+        }
+        if(Email.indexOf(' ') !== -1){
+            swal.fire({
+                type:'warning',
+                title:'Email do not have space value'
+            });
+            return false;
+        }
+        return true;
+    }
+    /** Password Check */
+    function PasswordCheck(){
+        let Pass = $("#UserPassword").val();
+        let CPass = $("#UserCPassword").val();
+        if(Pass == null || Pass == ""){
+            swal.fire({
+                type:'warning',
+                title:'Password is Empty'
+            });
+            return false;
+        }
+        if(CPass == null || CPass == ""){
+            swal.fire({
+                type:'warning',
+                title:'Confirm Password Empty'
+            });
+            return false;
+        }
+        if(Pass.indexOf(' ') !== -1){
+            swal.fire({
+                type:'warning',
+                title:'Password do not have space value'
+            });
+            return false;
+        }
+        if(CPass.indexOf(' ') !== -1){
+            swal.fire({
+                type:'warning',
+                title:'Confirm Password do not have space value'
+            });
+            return false;
+        }
+        if(Pass !== CPass){
+            swal.fire({
+                type:'warning',
+                title:'Not Match Password and Confirm Password'
+            });
+            return false;
+        }
+        return true;
+    }
+    /** Registe Submit */
+    function SubmitSet(){
+        document.Create.method="post";
+        document.Create.action="/admin/users/registe";
+        document.Create.submit();
+    }
+
+    /** Registe User Send */
+    function CreateDo(){
+        $("#CreateBtn").click(function(){
+            console.log("Click Create Do Btn");
+            if(EmailCheck() && PasswordCheck() && NameCheck()){
+                SubmitSet();
+            }
+        });
+    }
+    /** Registe user Do */
+    CreateDo();
+    /** Confirm Password Input Use Enter key */
+    $("input[name=UserCPassword]").keydown(function(key){
+        if(key.keyCode === 13){
+        	key.preventDefault();
+        	if(EmailCheck() && PasswordCheck() && NameCheck()){
+                SubmitSet();
+            }
+        }
+    })
+    
   });
 </script>
 </body>

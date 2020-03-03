@@ -1,12 +1,16 @@
 package com.example.admin.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.admin.persistence.AdminUserRepository;
 import com.example.domain.Member;
+import com.example.persistence.UserRepository;
 
 import lombok.extern.java.Log;
 
@@ -14,6 +18,12 @@ import lombok.extern.java.Log;
 @Controller
 @RequestMapping(value="/admin/users")
 public class AdminUserController {
+	
+	@Autowired
+	private AdminUserRepository repo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping(value="")
 	public String MainPage() {
@@ -28,9 +38,21 @@ public class AdminUserController {
 	}
 	
 	@PostMapping(value="/registe")
-	public String RegisteDo() {
+	public String RegisteDo(@ModelAttribute("vo")Member user) {
 		log.info("User Registe Do");
-		return "redirect:/admin/usersh/login";
+		/** Password Make Encoding Set */
+		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+		log.info("Insert User : " + user);
+		String CheckEmail = repo.getMember(user.getUserEmail());
+		log.info("Find User : " + CheckEmail);
+		if(CheckEmail == null) {
+			/** User Save Repository */
+			repo.save(user);
+			return "redirect:/admin/users/login";
+		}else {
+			log.info("Find Email : " + CheckEmail);
+			return "redirect:/admin/users/registe";
+		}
 	}
 	
 	@GetMapping(value="/login")

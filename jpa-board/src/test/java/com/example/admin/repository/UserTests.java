@@ -38,13 +38,34 @@ public class UserTests {
 	@Test
 	public void AdminLoginTests() {
 		log.info("Login User");
-		List<Member> user = repo.findByUserEmail("admin@co.kr");
+		String Search = "admin@co.kr";
+		List<Member> user = repo.findByUserEmail(Search);
+		log.info("user list :" + user);
 		user.forEach(items->{
 			if(passwordEncoder.matches("admin",items.getUserPassword())) {				
 				log.info("Login:" + items);
 			}else {
 				log.info("Login Failed");
 			}
+		});
+	}
+	
+	@Test
+	public void AdminRegisteCheckUserTests() {
+		log.info("check User");
+		Member Search = new Member();
+		Search.setUserEmail("admin@co.kr");
+		log.info("Set User : " + Search.getUserEmail());
+		String checkEmail = repo.getMember("admin@co.kr");
+		log.info("user is " + checkEmail);
+	}
+	
+	
+	@Test
+	public void AdminUserFindAllTests() {
+		log.info("User Find All");
+		repo.findAll().forEach(items->{
+			log.info("user : " + items);
 		});
 	}
 	

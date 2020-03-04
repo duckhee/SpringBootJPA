@@ -43,7 +43,7 @@ public class AdminUserController {
 		/** Password Make Encoding Set */
 		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 		log.info("Insert User : " + user);
-		String CheckEmail = repo.getMember(user.getUserEmail());
+		Member CheckEmail = repo.getMember(user.getUserEmail());
 		log.info("Find User : " + CheckEmail);
 		if(CheckEmail == null) {
 			/** User Save Repository */

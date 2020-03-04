@@ -13,6 +13,6 @@ public class MainController {
 	@GetMapping(value="")
 	public String MainPage() {
 		log.info("Main Page");
-		return "redirect:/users/login";
+		return "/customer/index";
 	}
 }

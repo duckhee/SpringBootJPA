@@ -56,7 +56,7 @@ public class UserTests {
 		Member Search = new Member();
 		Search.setUserEmail("admin@co.kr");
 		log.info("Set User : " + Search.getUserEmail());
-		String checkEmail = repo.getMember("admin@co.kr");
+		Member checkEmail =  repo.getMember("admin@co.kr");
 		log.info("user is " + checkEmail);
 	}
 	

@@ -17,5 +17,10 @@ public class BoardController {
 		return "redirect:/boards/list";
 	}
 	
+	@GetMapping(value="/list")
+	public String ListPage() {
+		log.info("Board List Page");
+		return "customer/board/list";
+	}
 	
 }

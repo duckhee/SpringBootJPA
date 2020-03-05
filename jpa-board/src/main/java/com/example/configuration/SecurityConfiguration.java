@@ -2,6 +2,9 @@ package com.example.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,12 +18,13 @@ import lombok.extern.java.Log;
 
 @Log
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private AdminUserService AdminService;
 	
-
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
@@ -38,21 +42,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.passwordParameter("password")
 		.defaultSuccessUrl("/admin")
 		.and()
-		.logout().logoutUrl("/admin/users/logout").invalidateHttpSession(true);
+		.logout().logoutUrl("/admin/users/logout").invalidateHttpSession(true)
+		.and()
+		.sessionManagement()
+		.maximumSessions(1)
+		.expiredUrl("/")
+		.maxSessionsPreventsLogin(false);
 		/** User Login Logic */
 		http.userDetailsService(AdminService);
 		//super.configure(http);
-	}
+		} 
 	
 	
 	
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		// TODO Auto-generated method stub
-		//super.configure(web);
-		web.ignoring().antMatchers("/admin/bootstrap/**/**","/admin/img/**", "/admin/dist/**/**", "/admin/plugins/**/**");
-	}
-
+		@Override
+		public void configure(WebSecurity web) throws Exception {
+			// TODO Auto-generated method stub
+			//super.configure(web);
+			web.ignoring().antMatchers("/admin/bootstrap/**/**","/admin/img/**", "/admin/dist/**/**", "/admin/plugins/**/**");
+		}
+	
 
 	/*
 	@Autowired

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.java.Log;
 
 @Log
+@Controller
 @RequestMapping(value="/users")
 public class UserController {
 
 	@GetMapping(value="")
 	public String MainPage() {
 		log.info("User Main Page");
-		return "redriect:/users/login";
+		return "redirect:/users/login";
 	}
 	
 	@GetMapping(value="/login")
@@ -31,7 +33,7 @@ public class UserController {
 	@GetMapping(value="/profile")
 	public String ProfilePage() {
 		log.info("User Profile");
-		return "/customer/user/profile";
+		return "customer/user/profile";
 	}
 	
 	@GetMapping(value="/modify")

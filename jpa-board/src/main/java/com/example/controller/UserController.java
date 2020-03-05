@@ -19,25 +19,25 @@ public class UserController {
 	@GetMapping(value="/login")
 	public String LoginPage() {
 		log.info("User Login Page");
-		return "/customer/user/login";
+		return "customer/user/login";
 	}
 	
 	@PostMapping(value="/login")
 	public String LoginDo() {
 		log.info("User Login Do");
-		return "";
+		return "redirect:/";
 	}
 	
 	@GetMapping(value="/profile")
 	public String ProfilePage() {
 		log.info("User Profile");
-		return "";
+		return "/customer/user/profile";
 	}
 	
 	@GetMapping(value="/modify")
 	public String ModifyPage() {
 		log.info("User Modify Page");
-		return "";
+		return "customer/user/modify";
 	}
 	
 	@PostMapping(value="/modify")

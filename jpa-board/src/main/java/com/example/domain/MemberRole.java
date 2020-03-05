@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,9 +21,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(of="idx")
-@ToString(exclude = "user")
+@ToString
 @Entity
-@Table(name="tbl_role")
+@Table(name="tbl_member_role")
 public class MemberRole {
 
 	@Id
@@ -41,8 +40,5 @@ public class MemberRole {
 	@UpdateTimestamp
 	@Column(name="updatedAt")
 	private Timestamp updatedAt;
-	
-	@ManyToOne
-	private Member user;
 	
 }

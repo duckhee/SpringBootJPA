@@ -41,7 +41,6 @@ public class BoardFiles {
 	@CreationTimestamp
 	@Column(name="createdAt")
 	private Timestamp createdAt;
-	
 	@UpdateTimestamp
 	@Column(name="udpatedAt")
 	private Timestamp updatedAt;

@@ -52,10 +52,9 @@ public class Member {
 	@Column(name="updatedAt")
 	@UpdateTimestamp
 	private Timestamp updatedAt;
-	/** mappedBy="value" value is MemberRole's member
-	 * mappedBy : 양뱡향 관계에서 주체가 되는 쪽(Many쪽, 외래키가 있는 쪽)을 정의
-	 * 여기서는 MemberRole에서 Member를 객체로 가지는 이름을 써줘야한다.
-	 */
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	
+	/** Fetch Type EAGER is Right Now */
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="user")
 	private List<MemberRole> roles;
 }

@@ -2,7 +2,6 @@ package com.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.java.Log;
 
@@ -10,7 +9,7 @@ import lombok.extern.java.Log;
 @Controller
 public class MainController {
 
-	@GetMapping(value="")
+	@GetMapping(value= {"","/"})
 	public String MainPage() {
 		log.info("Main Page");
 		return "/customer/index";

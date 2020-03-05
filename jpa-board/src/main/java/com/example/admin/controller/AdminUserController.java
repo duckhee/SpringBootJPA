@@ -25,19 +25,19 @@ public class AdminUserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@GetMapping(value="")
+	@GetMapping(value= {"","/"})
 	public String MainPage() {
 		log.info("User Main Page");
 		return "redirect:/admin/users/profile";
 	}
 	
-	@GetMapping(value="/registe")
+	@GetMapping(value="/signup")
 	public String RegistePage(@ModelAttribute("vo")Member user) {
 		log.info("User Registe Page");
 		return "admin/user/registe";
 	}
 	
-	@PostMapping(value="/registe")
+	@PostMapping(value="/signup")
 	public String RegisteDo(@ModelAttribute("vo")Member user) {
 		log.info("User Registe Do");
 		/** Password Make Encoding Set */
@@ -47,6 +47,7 @@ public class AdminUserController {
 		log.info("Find User : " + CheckEmail);
 		if(CheckEmail == null) {
 			/** User Save Repository */
+			user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 			repo.save(user);
 			return "redirect:/admin/users/login";
 		}else {
@@ -70,7 +71,7 @@ public class AdminUserController {
 	@PostMapping(value="/logout")
 	public String LogoutDo() {
 		log.info("User Log out Do");
-		return "";
+		return "redirect:/admin/users/login";
 	}
 	
 	@GetMapping(value="/profile")

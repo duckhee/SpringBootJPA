@@ -57,6 +57,6 @@ public class UserController {
 	@PostMapping(value="/logout")
 	public String LogoutDo() {
 		log.info("Logout User");
-		return "";
+		return "redirect:/users/login";
 	}
 }

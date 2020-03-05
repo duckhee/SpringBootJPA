@@ -17,23 +17,34 @@ import com.example.admin.service.AdminUserService;
 import lombok.extern.java.Log;
 
 @Log
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled=true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+@Order(value=1)
+public class AdminSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private AdminUserService AdminService;
-	
-	
+
+	public AdminSecurityConfiguration() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("Spring Security Configuration");
+		log.info("Admin Spring Security Configuration");
+		 
 		/** Admin Login Logic */
-		http.authorizeRequests()
-		.antMatchers("/admin/users/login").permitAll()
-		.antMatchers("/admin/users/logout").permitAll()
-		.antMatchers("/admin/**").hasAnyRole("ADMIN")
+		http.antMatcher("/admin/**")
+		.authorizeRequests()
+		.antMatchers("/admin/users/login")
+		.hasRole("ADMIN")
+		.anyRequest()
+		.authenticated()
 		.and()
 		.formLogin()
 		.loginPage("/admin/users/login")
@@ -41,39 +52,45 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.usernameParameter("email")
 		.passwordParameter("password")
 		.defaultSuccessUrl("/admin")
+		.permitAll(true)
 		.and()
-		.logout().logoutUrl("/admin/users/logout").invalidateHttpSession(true)
+		.logout()
+		.logoutUrl("/admin/users/logout")
+		.logoutSuccessUrl("/")
+		.invalidateHttpSession(true)
+		.permitAll()
 		.and()
 		.sessionManagement()
 		.maximumSessions(1)
 		.expiredUrl("/")
 		.maxSessionsPreventsLogin(false);
+
 		/** User Login Logic */
 		http.userDetailsService(AdminService);
 		//super.configure(http);
 		} 
-	
-	
-	
+		
+		
+		
 		@Override
 		public void configure(WebSecurity web) throws Exception {
 			// TODO Auto-generated method stub
 			//super.configure(web);
 			web.ignoring().antMatchers("/admin/bootstrap/**/**","/admin/img/**", "/admin/dist/**/**", "/admin/plugins/**/**");
 		}
+		
+		/*
+		@Autowired
+		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+			// TODO Auto-generated method stub
+			auth.inMemoryAuthentication().
+			withUser("admin@co.kr").
+			password("1111").
+			roles("ADMIN");
+			//super.configure(auth);
+		}
+		*/
 	
-
-	/*
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// TODO Auto-generated method stub
-		auth.inMemoryAuthentication().
-		withUser("admin@co.kr").
-		password("1111").
-		roles("ADMIN");
-		//super.configure(auth);
-	}
-	*/
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {

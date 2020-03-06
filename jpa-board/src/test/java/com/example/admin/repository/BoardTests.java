@@ -26,7 +26,7 @@ public class BoardTests {
 		board.setTitle("test");
 		board.setContent("<p>test</p>");
 		repo.save(board);
-		repo.findByTitle(board.getTitle()).forEach(items->{
+		repo.findListByTitle(board.getTitle()).forEach(items->{
 			log.info(items.toString());
 		});
 	}
@@ -34,6 +34,11 @@ public class BoardTests {
 	@Test
 	public void ModifyTests() {
 		log.info("Modify Board Tests");
+		Boards board = repo.findByTitle("test");
+		log.info("Find Boards : " + board.toString());
+		board.setTitle("test1");
+		repo.save(board);
+		log.info("Update : " + repo.findByTitle("test1").toString());
 	}
 	
 	@Test

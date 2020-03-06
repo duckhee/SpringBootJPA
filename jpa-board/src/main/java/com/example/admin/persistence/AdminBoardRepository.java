@@ -10,5 +10,7 @@ import com.example.domain.Boards;
 public interface AdminBoardRepository extends CrudRepository<Boards, Long>{
 	
 	@Query("SELECT b FROM Boards b WHERE title = ?1")
-	public List<Boards> findByTitle(String title);
+	public List<Boards> findListByTitle(String title);
+	/** Find By Use Title */
+	public Boards findByTitle(String title);
 }

@@ -1,5 +1,9 @@
 package com.example.admin.controller;
 
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -77,6 +81,8 @@ public class AdminUserController {
 	@GetMapping(value="/profile")
 	public String ProfilePage() {
 		log.info("User Profile Page");
+//		Principal principal = request.getUserPrincipal();
+//		System.out.println("principal : " + principal);
 		return "admin/user/profile";
 	}
 	

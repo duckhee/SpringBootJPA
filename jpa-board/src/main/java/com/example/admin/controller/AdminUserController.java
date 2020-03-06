@@ -81,7 +81,7 @@ public class AdminUserController {
 	}
 	
 	@GetMapping(value="/modify")
-	public String ModifyPage() {
+	public String ModifyPage(@ModelAttribute("user")Member user) {
 		log.info("User Modify Page");
 		return "admin/user/modify";
 	}

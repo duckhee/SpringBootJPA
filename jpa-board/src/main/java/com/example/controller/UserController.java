@@ -12,7 +12,7 @@ import lombok.extern.java.Log;
 @RequestMapping(value="/users")
 public class UserController {
 
-	@GetMapping(value="")
+	@GetMapping(value= {"","/"})
 	public String MainPage() {
 		log.info("User Main Page");
 		return "redirect:/users/login";
@@ -45,13 +45,13 @@ public class UserController {
 	@PostMapping(value="/modify")
 	public String ModifyDo() {
 		log.info("User Modify");
-		return "";
+		return "redirect:/users/profile";
 	}
 	
 	@PostMapping(value="/delete")
 	public String DeleteDo() {
 		log.info("Delete User");
-		return "";
+		return "redirect:/";
 	}
 	
 	@PostMapping(value="/logout")

@@ -11,7 +11,7 @@ import lombok.extern.java.Log;
 @RequestMapping(value="/admin")
 public class AdminMainController {
 
-	@GetMapping(value="")
+	@GetMapping(value= {"","/"})
 	public String Mainpage() {
 		log.info("Admin Main Page");
 		return "admin/index";

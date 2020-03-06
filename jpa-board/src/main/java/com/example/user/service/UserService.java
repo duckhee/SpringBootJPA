@@ -1,4 +1,4 @@
-package com.example.admin.service;
+package com.example.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,7 @@ import lombok.extern.java.Log;
 
 @Log
 @Service
-public class AdminUserService implements UserDetailsService{
+public class UserService implements UserDetailsService{
 
 	@Autowired
 	private AdminUserRepository repo;
@@ -23,7 +23,7 @@ public class AdminUserService implements UserDetailsService{
 		// TODO Auto-generated method stub
 		/** Try Catch */
 		try {
-			return repo.findByUserEmail(username).filter(user->user != null).map(user->new AdminSecurityUser(user)).get();
+			return repo.findByUserEmail(username).filter(user->user != null).map(user->new SecurityUser(user)).get();
 		}catch (UsernameNotFoundException notFound) {
 			// TODO: handle exception
 			log.info("Not found Error");

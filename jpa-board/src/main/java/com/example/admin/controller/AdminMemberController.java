@@ -12,7 +12,7 @@ import lombok.extern.java.Log;
 @RequestMapping(value="/admin/members")
 public class AdminMemberController {
 
-	@GetMapping(value="")
+	@GetMapping(value= {"","/"})
 	public String Main() {
 		log.info("Redirect List Page");
 		return "redirect:/admin/members/list";
@@ -21,13 +21,13 @@ public class AdminMemberController {
 	@GetMapping(value="/list")
 	public String ListPage() {
 		log.info("Member List Page");
-		return "";
+		return "admin/board/list";
 	}
 	
 	@GetMapping(value="/create")
 	public String CreatePage() {
 		log.info("Member Create Page");
-		return "";
+		return "admin/board/create";
 	}
 	
 	@PostMapping(value="/create")
@@ -39,7 +39,7 @@ public class AdminMemberController {
 	@GetMapping(value="/update")
 	public String ModifyPage() {
 		log.info("Member Modify Page");
-		return "";
+		return "admin/board/update";
 	}
 	
 	@PostMapping(value="/update")
@@ -51,7 +51,7 @@ public class AdminMemberController {
 	@GetMapping(value="/view")
 	public String ViewPage() {
 		log.info("Member Detail");
-		return "";
+		return "admin/board/view";
 	}
 	
 	@PostMapping(value="/delete")

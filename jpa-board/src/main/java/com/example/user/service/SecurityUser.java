@@ -1,6 +1,7 @@
-package com.example.service;
+package com.example.user.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -11,9 +12,11 @@ import org.springframework.security.core.userdetails.User;
 import com.example.domain.Member;
 import com.example.domain.MemberRole;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 @Log
+@Getter
 @SuppressWarnings("serial")
 public class SecurityUser extends User{
 
@@ -37,4 +40,3 @@ public class SecurityUser extends User{
 	}
 	
 }
-

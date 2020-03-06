@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import com.example.admin.service.AdminUserService;
+import com.example.user.service.UserService;
 
 import lombok.extern.java.Log;
 
@@ -18,7 +18,7 @@ import lombok.extern.java.Log;
 public class UserSecurityConfiguratiion extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private AdminUserService AdminService;
+	private UserService UserSerives;
 
 
 	public UserSecurityConfiguratiion() {
@@ -32,6 +32,7 @@ public class UserSecurityConfiguratiion extends WebSecurityConfigurerAdapter{
 		// TODO Auto-generated method stub
 		log.info("User Spring Security Configuration");
 		/** Admin Login Logic */
+		/*
 		http.authorizeRequests()
 		.antMatchers("/users/login").permitAll()
 		.antMatchers("/users/logout").permitAll()
@@ -50,9 +51,9 @@ public class UserSecurityConfiguratiion extends WebSecurityConfigurerAdapter{
 		.maximumSessions(1)
 		.expiredUrl("/")
 		.maxSessionsPreventsLogin(false);
-		
+		*/
 		/** User Login Logic */
-		http.userDetailsService(AdminService);
+		http.userDetailsService(UserSerives);
 		//super.configure(http);
 		}
 }

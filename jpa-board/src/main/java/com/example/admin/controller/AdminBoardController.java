@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.admin.persistence.AdminBoardRepository;
 import com.example.domain.Boards;
@@ -38,26 +39,30 @@ public class AdminBoardController {
 	}
 	
 	@PostMapping(value="/create")
-	public String CreateDo(@ModelAttribute("vo") Boards board) {
+	public String CreateDo(@ModelAttribute("vo") Boards board, RedirectAttributes redirectFlash) {
 		log.info("Admin Board Create Do");
 		log.info("board Value : " + board);
+		if(board.getTitle() == null) {
+			redirectFlash.addFlashAttribute("msg", "Title Need");
+			return "redirect:/admin/boards/create";
+		}
 		return "redirect:/admin/boards/list";
 	}
 	
 	@GetMapping(value="/list")
-	public String ListPage() {
+	public String ListPage(Model model) {
 		log.info("Admin Board List Page");
 		return "admin/board/list";
 	}
 	
 	@GetMapping(value="/update")
-	public String ModifyPage() {
+	public String ModifyPage(@ModelAttribute("vo") Boards board) {
 		log.info("Admin Board Modify Page");
 		return "admin/board/update";
 	}
 	
 	@PostMapping(value="/update")
-	public String ModifyDo() {
+	public String ModifyDo(@ModelAttribute("vo") Boards board) {
 		log.info("Admin Board Modify Do");
 		return "redirect:/admin/boards/list";
 	}

@@ -1,5 +1,10 @@
 package com.example.admin.persistence;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 
@@ -18,10 +23,14 @@ public interface AdminMemberRepository extends CrudRepository<Member, Long>, Que
 		if(type == null) {
 			return builder;
 		}
-		switch(type) {
-			
-		}
+		
 		return builder;
 	}
+	
+	
+	
+	@Query("SELECT m, count(r) FROM Member m LEFT OUTER JOIN m.roles r WHERE m.idx > 0 GROUP BY m")
+	public List<Member> getJoinList();
+	
 
 }

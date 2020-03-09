@@ -83,9 +83,7 @@ public class UserTests {
 	@Test
 	public void AdminUserFindAllTests() {
 		log.info("User Find All");
-		repo.findAll().forEach(items->{
-			log.info("user : " + items);
-		});
+		
 	}
 	
 	@Test
@@ -97,18 +95,25 @@ public class UserTests {
 		log.info("test : " + test);
 		test1 = repo.getMember(test.getUserEmail());
 		log.info("test get User : " + test1);
-		if(passwordEncoder.matches("test", test1.getUserPassword())) { 
-			test1.setUserPassword(passwordEncoder.encode("test"));
-			repo.save(test1);
-		}else {
-			log.info("Not Match User Password");
-			log.info("get User : " + test1);
-			if(passwordEncoder.matches("test", test1.getUserPassword())) {
-				log.info("User Change Password Already");
+		if(test1 != null) {
+			if(passwordEncoder.matches("test", test1.getUserPassword())) { 
+				test1.setUserPassword(passwordEncoder.encode("test"));
+				MemberRole role = new MemberRole();
+				role.setRole("ADMIN");
+				test1.setRoles(Arrays.asList(role));
+				repo.save(test1);
 			}else {
-				log.info("User Password Not Match");
+				log.info("Not Match User Password");
+				log.info("get User : " + test1);
+				if(passwordEncoder.matches("test", test1.getUserPassword())) {
+					log.info("User Change Password Already");
+				}else {
+					log.info("User Password Not Match");
+				}
+				
 			}
-			
+		}else {
+			log.info("not user");
 		}
 		
 	}

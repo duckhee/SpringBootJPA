@@ -24,7 +24,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString(exclude = "replies")
+@ToString(exclude = {"replies", "files"})
 @EqualsAndHashCode(of="idx")
 @Entity
 @Table(name="tbl_board")
@@ -39,6 +39,8 @@ public class Boards {
 	private String title;
 	@Column(name="content")
 	private String content;
+	@Column(name="writer", nullable = false)
+	private String writer;
 	@CreationTimestamp
 	@Column(name="createdAt")
 	private Timestamp createdAt;

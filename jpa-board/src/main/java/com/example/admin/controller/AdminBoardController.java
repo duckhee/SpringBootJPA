@@ -3,6 +3,8 @@ package com.example.admin.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.admin.persistence.AdminBoardRepository;
 import com.example.domain.Boards;
+import com.example.util.PageVo;
 
 import lombok.extern.java.Log;
 
@@ -33,8 +36,7 @@ public class AdminBoardController {
 	@GetMapping(value="/create")
 	public String CreatePage(@ModelAttribute("vo") Boards board, Model models, HttpServletRequest req) {
 		log.info("Admin Board Create Page");
-		log.info("get Session :" + req.getSession());
-		models.addAttribute("writer", req.getSession());
+		
 		return "admin/board/create";
 	}
 	
@@ -46,12 +48,20 @@ public class AdminBoardController {
 			redirectFlash.addFlashAttribute("msg", "Title Need");
 			return "redirect:/admin/boards/create";
 		}
+		if(board.getWriter() == null) {
+			redirectFlash.addFlashAttribute("msg", "Login First");
+			return "redirect:/admin/boards/create";
+		}
+		/** Board Save */
+		repo.save(board);
 		return "redirect:/admin/boards/list";
 	}
 	
 	@GetMapping(value="/list")
-	public String ListPage(Model model) {
+	public String ListPage(@ModelAttribute("pageVo")PageVo vo,Model model) {
 		log.info("Admin Board List Page");
+		Pageable page = vo.makePageable(0, "idx");
+		
 		return "admin/board/list";
 	}
 	

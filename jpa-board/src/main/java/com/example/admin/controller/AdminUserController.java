@@ -1,8 +1,8 @@
 package com.example.admin.controller;
 
-import java.security.Principal;
+//import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.admin.persistence.AdminUserRepository;
 import com.example.domain.Member;
-import com.example.persistence.UserRepository;
+//import com.example.persistence.UserRepository;
 
 import lombok.extern.java.Log;
 

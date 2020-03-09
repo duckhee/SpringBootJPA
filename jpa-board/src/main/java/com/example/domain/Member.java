@@ -54,7 +54,7 @@ public class Member {
 	private Timestamp updatedAt;
 	
 	/** Fetch Type EAGER is Right Now */
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="user")
 	private List<MemberRole> roles;
 }

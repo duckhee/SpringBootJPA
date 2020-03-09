@@ -1,5 +1,8 @@
 package com.example.admin.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
+import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
+import com.example.util.PageMaker;
+import com.example.util.PageVo;
 
 import lombok.extern.java.Log;
 
@@ -15,6 +22,9 @@ import lombok.extern.java.Log;
 @Controller
 @RequestMapping(value="/admin/members")
 public class AdminMemberController {
+	
+	@Autowired
+	private AdminMemberCustomCrudRepository repo;
 
 	@GetMapping(value= {"","/"})
 	public String Main() {
@@ -23,9 +33,14 @@ public class AdminMemberController {
 	}
 	
 	@GetMapping(value="/list")
-	public String ListPage(Model model) {
+	public String ListPage(Model model, @ModelAttribute("pageVO")PageVo page) {
 		log.info("Member List Page");
-		return "admin/board/list";
+		Pageable paging = page.makePageable(0, "idx");
+		Page<Object[]> result = repo.getPaging(page.getType(), page.getKeyword(), paging);
+		log.info("page info : " + paging);
+		log.info("list info : " + result);
+		model.addAttribute("pageList", new PageMaker<>(result));
+		return "admin/member/list";
 	}
 	
 	@GetMapping(value="/create")

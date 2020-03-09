@@ -55,6 +55,6 @@ public class Member {
 	
 	/** Fetch Type EAGER is Right Now */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="user")
+	@JoinColumn(name="memberIdx")
 	private List<MemberRole> roles;
 }

@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.admin.persistence.AdminMemberRepository;
+import com.example.util.PageMaker;
 import com.example.util.PageVo;
 
 import lombok.extern.java.Log;
@@ -36,11 +38,23 @@ public class MemberTests {
 	@Test
 	public void ListMemberTests() {
 		log.info("member Paging List Tests");
-		Pageable page = PageRequest.of(0, 10, Sort.Direction.DESC, "idx");
 		
-		repo.getPaging(null, null, page).forEach(items->{
-			log.info("member : " + items);
+		PageVo pageVo = new PageVo();
+		pageVo.setType(null);
+		pageVo.setKeyword(null);
+		Pageable page = pageVo.makePageable(0, "idx");
+		Page<Object[]> result = repo.getPaging(null, null, page);
+		log.info("total page number : " + result.getTotalPages());
+		log.info("content:" + result);
+		result.getContent().forEach(items->{
+			for(int i = 0; i < items.length; i++) {
+				if(items[i] == null) {
+					items[i] = "";
+				}
+				log.info(""+items[i]);
+			}
 		});
+		
 	}
 	
 	@Test

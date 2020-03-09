@@ -37,10 +37,12 @@ public class AdminMemberCustomCrudRepositoryImpl extends QuerydslRepositorySuppo
 		QMemberRole roles = QMemberRole.memberRole;
 		
 		JPQLQuery<Member> query = from(user);
-		JPQLQuery<Tuple> tuple = query.select(user.idx, user.userEmail, user.userName, roles.count(), user.createdAt, user.updatedAt);
+		/** Get Tuple user.idx, userEmail, userName, role, createdAt, updatedAt */
+		JPQLQuery<Tuple> tuple = query.select(user.idx, user.userEmail, user.userName,  roles.role, user.createdAt, user.updatedAt);
 		/** Left JOIN */
-		tuple.leftJoin(roles);
+		tuple.leftJoin(user.roles, roles);
 		tuple.where(user.idx.gt(0L));
+		
 		/** Search Option Type */
 		if(type != null) {
 			switch(type.toLowerCase()) {
@@ -56,18 +58,20 @@ public class AdminMemberCustomCrudRepositoryImpl extends QuerydslRepositorySuppo
 			}
 		}
 		/** Group By and order */
-		tuple.groupBy(user.idx);
+		//tuple.groupBy(user.idx);
 		tuple.orderBy(user.idx.desc());
 		/** Paging */
-		//tuple.offset(page.getOffset());
-		//tuple.limit(page.getPageSize());
+		tuple.offset(page.getOffset());
+		tuple.limit(page.getPageSize());
 		/** Query do */
 		List<Tuple> list = tuple.fetch();
+		
 		/** Return Value List */
 		List<Object[]> resultList = new ArrayList<>();
 		/** Make Return List */
 		list.forEach(users->{
 			resultList.add(users.toArray());
+			
 		});
 		long total = tuple.fetchCount();
 		

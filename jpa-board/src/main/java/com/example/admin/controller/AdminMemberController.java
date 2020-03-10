@@ -1,5 +1,8 @@
 package com.example.admin.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
@@ -57,9 +60,9 @@ public class AdminMemberController {
 	}
 	
 	@GetMapping(value="/update")
-	public String ModifyPage() {
+	public String ModifyPage(Model model, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Member Modify Page");
-		return "admin/board/update";
+		return "admin/member/update";
 	}
 	
 	@PostMapping(value="/update")
@@ -70,9 +73,20 @@ public class AdminMemberController {
 	}
 	
 	@GetMapping(value="/view")
-	public String ViewPage() {
+	public String ViewPage(HttpServletRequest request, Model model, RedirectAttributes flash) {
 		log.info("Member Detail");
-		return "admin/board/view";
+		String Email = request.getParameter("id");
+		log.info("email : "+request.getParameter("id"));
+		if(Email == null) {
+			/** Failed Flash Message */
+			flash.addFlashAttribute("", "");
+			return "redirect:/admin/members/list";
+		}
+		/** Member Idx, Member UserName, Member UserEmail, MemberRole role Member CreatedAt, Member updatedAt */
+		Object[] users = repo.getDetail(Email);
+		log.info("member:"+users);
+		model.addAttribute("userInfo",users);
+		return "admin/member/view";
 	}
 	
 	@PostMapping(value="/delete")

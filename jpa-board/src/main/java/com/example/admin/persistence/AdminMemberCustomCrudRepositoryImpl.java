@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import com.example.domain.Member;
 import com.example.domain.QMember;
 import com.example.domain.QMemberRole;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
 
@@ -76,6 +77,23 @@ public class AdminMemberCustomCrudRepositoryImpl extends QuerydslRepositorySuppo
 		long total = tuple.fetchCount();
 		
 		return new PageImpl<>(resultList, page, total);
+	}
+
+
+	@Override
+	public Object[] getDetail(String email) {
+		// TODO Auto-generated method stub
+		QMember user = QMember.member;
+		QMemberRole roles = QMemberRole.memberRole;
+		
+		JPQLQuery<Member> query = from(user);
+		/** Get Tuple user.idx, userEmail, userName, role, createdAt, updatedAt */
+		JPQLQuery<Tuple> tuple = query.select(user.idx, user.userEmail, user.userName,  roles.role, user.createdAt, user.updatedAt);
+		/** Left JOIN */
+		tuple.leftJoin(user.roles, roles);
+		tuple.where(user.idx.gt(0L));
+		tuple.where(user.userEmail.eq(email));
+		return tuple.fetchOne().toArray();
 	}
 
 

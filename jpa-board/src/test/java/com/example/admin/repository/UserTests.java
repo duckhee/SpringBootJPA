@@ -2,6 +2,7 @@ package com.example.admin.repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.admin.persistence.AdminUserRepository;
+import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
 import com.example.domain.MemberRole;
+import com.example.user.service.SecurityUser;
 
 import lombok.extern.java.Log;
 
@@ -22,7 +24,7 @@ import lombok.extern.java.Log;
 public class UserTests {
 
 	@Autowired
-	private AdminUserRepository repo;
+	private AdminMemberCustomCrudRepository repo;
 	
 	
 	@Autowired
@@ -38,9 +40,12 @@ public class UserTests {
 		MemberRole role = new MemberRole();
 		role.setRole("ADMIN");
 		admin.setRoles(Arrays.asList(role));
-		
+		try {
 		repo.save(admin);
-		
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		log.info("admin : "+repo.findByUserEmail("admin@co.kr").toString());
 	}
 	
@@ -48,10 +53,22 @@ public class UserTests {
 	public void AdminCreateTests() {
 		log.info("Create User");
 		Member user = new Member();
+		/** Update need Idx */
+		//user.setIdx(13L);
 		user.setUserEmail("test@co.kr");
 		user.setUserPassword(passwordEncoder.encode("test"));
 		user.setUserName("Tester");
-		repo.save(user);				
+		MemberRole role = new MemberRole();
+		role.setRole("USER");
+		user.setRoles(Arrays.asList(role));
+		repo.save(user);
+	}
+	
+	@Test
+	public void AdminFindByUserEmailTests() {
+		log.info("Admin Find By UserEmail Tests");
+		Optional<Member> test = repo.findByUserEmail("admin@co.kr");
+		log.info("testing : " + test);
 	}
 	
 	@Test
@@ -62,7 +79,7 @@ public class UserTests {
 		log.info("user list :" + user);
 		user.forEach(items->{
 			if(passwordEncoder.matches("admin",items.getUserPassword())) {				
-				log.info("Login:" + items);
+				log.info("Login:" + items.toString());
 			}else {
 				log.info("Login Failed");
 			}

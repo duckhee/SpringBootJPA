@@ -1,5 +1,9 @@
 package com.example.admin.persistence;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.example.domain.Member;
@@ -33,5 +37,17 @@ public interface AdminMemberCustomCrudRepository extends CrudRepository<Member, 
 		}
 		return builder;
 	}
+	
+	/** User Detail Page use check first Email */
+	public Optional<Member> findByUserEmail(String email);
+	/** user check Registe Do */
+	@Query("SELECT m FROM Member m WHERE m.userEmail=?1")
+	public Member getMember(String email);
+	@Query("SELECT m FROM Member m WHERE m.userEmail=?1")
+	public List<Member> getListByUserEmail(String email);
+	/** User Search by Role */
+	@Query("SELECT m FROM Member m ")
+	public List<Member> getListByRole(String roles);
+	
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+
 import com.example.domain.Member;
 import com.example.domain.MemberRole;
 
@@ -27,15 +28,16 @@ public class SecurityUser extends User{
 	public SecurityUser(Member user) {
 		super(user.getUserEmail(), user.getUserPassword(), makeGrantedAuthority(user.getRoles()));
 		this.user = user;
+		System.out.println("user : "+user);
 	}
 	
 	private static List<GrantedAuthority> makeGrantedAuthority(List<MemberRole> roles){
 		List<GrantedAuthority> list = new ArrayList<>();
 		
 		roles.forEach(role->{
-			log.info("Login User : "+role.toString());
 			list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole()));
 		});
+		
 		return list;
 	}
 	

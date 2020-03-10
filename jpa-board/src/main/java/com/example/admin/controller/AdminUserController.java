@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.admin.persistence.AdminUserRepository;
+import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
 //import com.example.persistence.UserRepository;
 
@@ -24,7 +24,7 @@ import lombok.extern.java.Log;
 public class AdminUserController {
 	
 	@Autowired
-	private AdminUserRepository repo;
+	private AdminMemberCustomCrudRepository repo;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;

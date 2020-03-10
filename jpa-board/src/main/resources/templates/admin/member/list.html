@@ -547,8 +547,8 @@
                 </thead>
                 <tbody th:with="page=${pageList.result}">
                 	<tr style="text-align:center;"th:each="arr:${page.content}">
-                		<td><input type="checkbox" th:value="${arr[0]}"></td>
-                		<td>[[${arr[1]}]]</td>
+                		<td><input type="checkbox" name="check" th:value="${arr[0]}"></td>
+                		<td><a href="#/admin/members/view" th:href="@{/admin/members/view(id=${arr[1]})}">[[${arr[1]}]]</a></td>
                 		<td>[[${arr[2]}]]</td>
                 		<td>[[${arr[3]}]]</td>
                 		<td>[[${#dates.format(arr[4], 'yyyy-MM-dd HH:mm')}]]</td>

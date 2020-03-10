@@ -28,7 +28,7 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString(exclude = "roles")
+@ToString
 @EqualsAndHashCode(of="idx")
 @Entity
 @Table(name="tbl_members")
@@ -55,6 +55,6 @@ public class Member {
 	
 	/** Fetch Type EAGER is Right Now */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="memberIdx")
+	@JoinColumn(name="member")
 	private List<MemberRole> roles;
 }

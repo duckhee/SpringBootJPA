@@ -47,13 +47,13 @@ public class AdminMemberController {
 	}
 	
 	@GetMapping(value="/create")
-	public String CreatePage(@ModelAttribute("vo")Member user) {
+	public String CreatePage(@ModelAttribute("user")Member user, RedirectAttributes flash) {
 		log.info("Member Create Page");
-		return "admin/board/create";
+		return "admin/member/create";
 	}
 	
 	@PostMapping(value="/create")
-	public String CreateDo(@ModelAttribute("vo")Member user) {
+	public String CreateDo(@ModelAttribute("user")Member user) {
 		log.info("Member Create Do");
 		log.info("user : " + user);
 		return "redirect:/admin/members/list";
@@ -62,11 +62,18 @@ public class AdminMemberController {
 	@GetMapping(value="/update")
 	public String ModifyPage(Model model, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Member Modify Page");
+		String email = request.getParameter("id");
+		log.info("Update User Email : " + email);
+		if(email == null) {
+			/** Not Email get Parameter */
+			flash.addAttribute("", "");
+			return "redirect:/admin/users/login";
+		}
 		return "admin/member/update";
 	}
 	
 	@PostMapping(value="/update")
-	public String ModifyDo() {
+	public String ModifyDo(Model model, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Member Modify Do");
 		/** TODO view page mapping */
 		return "redirect:/admin/members/list";
@@ -90,7 +97,7 @@ public class AdminMemberController {
 	}
 	
 	@PostMapping(value="/delete")
-	public String DeleteDo() {
+	public String DeleteDo(HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Member Delete Do");
 		return "redirect:/admin/members/list";
 	}

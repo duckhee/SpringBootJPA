@@ -26,6 +26,7 @@ public class UserService implements UserDetailsService{
 		// TODO Auto-generated method stub
 		/** Try Catch */
 		try {
+			log.info("User Detail Get Start");
 			return repo.findByUserEmail(username).filter(user->user != null).map(user->new SecurityUser(user)).get();
 		}catch (UsernameNotFoundException notFound) {
 			// TODO: handle exception

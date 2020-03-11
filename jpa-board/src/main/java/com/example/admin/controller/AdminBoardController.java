@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.admin.persistence.AdminBoardCustomCrudRepository;
 import com.example.admin.persistence.AdminBoardRepository;
 import com.example.domain.Boards;
+import com.example.util.PageMaker;
 import com.example.util.PageVo;
 
 import lombok.extern.java.Log;
@@ -25,7 +27,7 @@ import lombok.extern.java.Log;
 public class AdminBoardController {
 	
 	@Autowired
-	private AdminBoardRepository repo;
+	private AdminBoardCustomCrudRepository repo;
 	
 	@GetMapping(value= {"","/"})
 	public String MainPage() {
@@ -34,14 +36,14 @@ public class AdminBoardController {
 	}
 	
 	@GetMapping(value="/create")
-	public String CreatePage(@ModelAttribute("vo") Boards board, Model models, HttpServletRequest req) {
+	public String CreatePage(@ModelAttribute("Board") Boards board, Model models, HttpServletRequest req) {
 		log.info("Admin Board Create Page");
 		
 		return "admin/board/create";
 	}
 	
 	@PostMapping(value="/create")
-	public String CreateDo(@ModelAttribute("vo") Boards board, RedirectAttributes redirectFlash) {
+	public String CreateDo(@ModelAttribute("Board") Boards board, HttpServletRequest request, RedirectAttributes redirectFlash) {
 		log.info("Admin Board Create Do");
 		log.info("board Value : " + board);
 		if(board.getTitle() == null) {
@@ -50,7 +52,7 @@ public class AdminBoardController {
 		}
 		if(board.getWriter() == null) {
 			redirectFlash.addFlashAttribute("msg", "Login First");
-			return "redirect:/admin/boards/create";
+			return "redirect:/admin/users/login";
 		}
 		/** Board Save */
 		repo.save(board);
@@ -61,26 +63,51 @@ public class AdminBoardController {
 	public String ListPage(@ModelAttribute("pageVo")PageVo vo,Model model) {
 		log.info("Admin Board List Page");
 		Pageable page = vo.makePageable(0, "idx");
-		
+		Page<Object[]> getList = repo.getPaging(vo.getType(), vo.getKeyword(), page);
+		log.info("" + page);
+		log.info("" + getList);
+		model.addAttribute("list", new PageMaker<>(getList));
 		return "admin/board/list";
 	}
 	
 	@GetMapping(value="/update")
-	public String ModifyPage(@ModelAttribute("vo") Boards board) {
+	public String ModifyPage(@ModelAttribute("Board") Boards board, HttpServletRequest request) {
 		log.info("Admin Board Modify Page");
-		return "admin/board/update";
+		try {
+			int bno = Integer.parseInt(request.getParameter("bno"));
+			log.info("get Bno :" + bno);
+			return "admin/board/update";
+		}catch (NumberFormatException e) {
+			// TODO: handle exception
+			log.info("not nubmer format");
+			return "redirect:/admin/boards/list";
+		}
 	}
 	
 	@PostMapping(value="/update")
-	public String ModifyDo(@ModelAttribute("vo") Boards board) {
+	public String ModifyDo(@ModelAttribute("Board") Boards board, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Admin Board Modify Do");
 		return "redirect:/admin/boards/list";
 	}
 	
 	@GetMapping(value="/view")
-	public String ViewPage() {
+	public String ViewPage(HttpServletRequest request) {
 		log.info("Admin Board View Page");
-		return "admin/board/view";
+		/** get board Detail View use board.idx parameter Type is bno */
+		try {
+			int bno = Integer.parseInt(request.getParameter("bno"));
+			log.info("get BNO :" + bno);
+			return "admin/board/view";
+		}catch (NumberFormatException e) {
+			// TODO: handle exception
+			log.info("not number format");
+			return "redirect:/admin/boards/list";
+		}
 	}
-
+	
+	@PostMapping(value="/delete")
+	public String DeleteDo(HttpServletRequest request, RedirectAttributes flash) {
+		log.info("Admin Board Delete Do");
+		return "redirect:/admin/boards/list";
+	}
 }

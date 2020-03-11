@@ -1,5 +1,10 @@
 package com.example.admin.controller;
 
+import java.security.Principal;
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
 //import java.security.Principal;
 
 //import javax.servlet.http.HttpServletRequest;
@@ -11,10 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
 //import com.example.persistence.UserRepository;
+import com.example.domain.MemberRole;
 
 import lombok.extern.java.Log;
 
@@ -36,13 +43,13 @@ public class AdminUserController {
 	}
 	
 	@GetMapping(value="/signup")
-	public String RegistePage(@ModelAttribute("vo")Member user) {
+	public String RegistePage(@ModelAttribute("user")Member user) {
 		log.info("User Registe Page");
 		return "admin/user/registe";
 	}
 	
 	@PostMapping(value="/signup")
-	public String RegisteDo(@ModelAttribute("vo")Member user) {
+	public String RegisteDo(@ModelAttribute("user")Member user) {
 		log.info("User Registe Do");
 		/** Password Make Encoding Set */
 		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
@@ -52,6 +59,10 @@ public class AdminUserController {
 		if(CheckEmail == null) {
 			/** User Save Repository */
 			user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+			/** Member Role Default USER */
+			MemberRole roles = new MemberRole();
+			roles.setRole("USER");
+			user.setRoles(Arrays.asList(roles));
 			repo.save(user);
 			return "redirect:/admin/users/login";
 		}else {
@@ -79,22 +90,29 @@ public class AdminUserController {
 	}
 	
 	@GetMapping(value="/profile")
-	public String ProfilePage() {
+	public String ProfilePage(HttpServletRequest request) {
 		log.info("User Profile Page");
-//		Principal principal = request.getUserPrincipal();
-//		System.out.println("principal : " + principal);
+		Principal principal = request.getUserPrincipal();
+		System.out.println("principal : " + principal);
+		/** view get [[${#authentication.principal.user}]] is Member Vo */
 		return "admin/user/profile";
 	}
 	
 	@GetMapping(value="/modify")
-	public String ModifyPage(@ModelAttribute("user")Member user) {
+	public String ModifyPage(@ModelAttribute("user")Member user, HttpServletRequest request) {
 		log.info("User Modify Page");
 		return "admin/user/modify";
 	}
 	
 	@PostMapping(value="/modify")
-	public String ModifyDo() {
+	public String ModifyDo(@ModelAttribute("user")Member user, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("User Modify Do");
 		return "redirect:/admin/users/profile";
+	}
+	
+	@PostMapping(value="/delete")
+	public String DeleteDo() {
+		log.info("User Delete");
+		return "redirect:/admin/users/signup";
 	}
 }

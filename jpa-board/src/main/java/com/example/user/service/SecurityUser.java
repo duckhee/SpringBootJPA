@@ -37,7 +37,7 @@ public class SecurityUser extends User{
 		roles.forEach(role->{
 			list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole()));
 		});
-		
+		log.info("get Security Get List : " + list);
 		return list;
 	}
 	

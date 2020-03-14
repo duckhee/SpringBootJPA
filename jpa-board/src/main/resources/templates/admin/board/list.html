@@ -535,15 +535,27 @@
             <!--./box-header-->
             <div class="box-body">
               <table class="table table-bordered table-hover">
-                <tr style="text-align:center;">
-                  <td><input type="checkbox" id="AllCheck" ></td>
-                  <td>Title</td>
-                  <td>Writer</td>
-                  <td>View Number</td>
-                  <td>Reply Number</td>
-                  <td>Create Time</td>
-                  <td>Update Time</td>
-                </tr>
+              	<thead>
+                	<tr style="text-align:center;">
+                  		<td><input type="checkbox" id="AllCheck" ></td>
+                  		<td>Title</td>
+                  		<td>Writer</td>
+                  		<!--<td>View Number</td>-->
+                  		<td>Reply Number</td>
+                  		<td>Create Time</td>
+                  		<td>Update Time</td>
+                	</tr>
+                </thead>
+                <tbody th:with="boards=${list.result}">
+                	<tr style="text-align:center;" th:each="board:${boards.content}">
+                		<td><input type="checkbox" name="check" th:value="${board[0]}">
+                		<td><a th:href="@{/admin/boards/view(bno=${board[0]})}">[[${board[1]}]]</a></td>
+                		<td>[[${board[3]}]]</td>
+                		<td>[[${board[4]}]]</td>
+                		<td>[[${board[5]}]]</td>
+                		<td>[[${board[6]}]]</td>
+                	</tr>
+                </tbody>
                 
               </table>
               <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" style="text-align:center;">

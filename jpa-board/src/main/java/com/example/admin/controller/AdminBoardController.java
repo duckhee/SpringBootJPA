@@ -43,14 +43,16 @@ public class AdminBoardController {
 	}
 	
 	@PostMapping(value="/create")
-	public String CreateDo(@ModelAttribute("Board") Boards board, HttpServletRequest request, RedirectAttributes redirectFlash) {
+	public String CreateDo(@ModelAttribute("Board") Boards board, PageVo page, HttpServletRequest request, RedirectAttributes redirectFlash) {
 		log.info("Admin Board Create Do");
 		log.info("board Value : " + board);
 		if(board.getTitle() == null) {
+			log.info("title is not null");
 			redirectFlash.addFlashAttribute("msg", "Title Need");
 			return "redirect:/admin/boards/create";
 		}
-		if(board.getWriter() == null) {
+		if(board.getWriter() == null || board.getWriter() == "") {
+			log.info("not login User");
 			redirectFlash.addFlashAttribute("msg", "Login First");
 			return "redirect:/admin/users/login";
 		}
@@ -71,11 +73,15 @@ public class AdminBoardController {
 	}
 	
 	@GetMapping(value="/update")
-	public String ModifyPage(@ModelAttribute("Board") Boards board, HttpServletRequest request) {
+	public String ModifyPage(HttpServletRequest request, Model model) {
 		log.info("Admin Board Modify Page");
 		try {
-			int bno = Integer.parseInt(request.getParameter("bno"));
+			Long bno = (long)Integer.parseInt(request.getParameter("bno"));
 			log.info("get Bno :" + bno);
+			repo.findById(bno).ifPresent(boards->{
+				log.info("get Board :" + boards);
+				model.addAttribute("board", boards);
+			});
 			return "admin/board/update";
 		}catch (NumberFormatException e) {
 			// TODO: handle exception
@@ -87,16 +93,21 @@ public class AdminBoardController {
 	@PostMapping(value="/update")
 	public String ModifyDo(@ModelAttribute("Board") Boards board, HttpServletRequest request, RedirectAttributes flash) {
 		log.info("Admin Board Modify Do");
+		log.info("board " + board);
 		return "redirect:/admin/boards/list";
 	}
 	
 	@GetMapping(value="/view")
-	public String ViewPage(HttpServletRequest request) {
+	public String ViewPage(HttpServletRequest request, Model model) {
 		log.info("Admin Board View Page");
 		/** get board Detail View use board.idx parameter Type is bno */
 		try {
-			int bno = Integer.parseInt(request.getParameter("bno"));
+			Long bno = (long) Integer.parseInt(request.getParameter("bno"));
 			log.info("get BNO :" + bno);
+			repo.findById(bno).ifPresent(board->{
+				log.info("get Board :" + board);
+				model.addAttribute("Board", board);
+			});
 			return "admin/board/view";
 		}catch (NumberFormatException e) {
 			// TODO: handle exception
@@ -105,8 +116,20 @@ public class AdminBoardController {
 		}
 	}
 	
+	@PostMapping(value="/uploadImg")
+	public String UploadImg() {
+		log.info("Upload Image");
+		return "";
+	}
+	
+	@PostMapping(value="/uploadFile")
+	public String UploadFile() {
+		log.info("upload File");
+		return "";
+	}
+	
 	@PostMapping(value="/delete")
-	public String DeleteDo(HttpServletRequest request, RedirectAttributes flash) {
+	public String DeleteDo(HttpServletRequest request, PageVo page, RedirectAttributes flash) {
 		log.info("Admin Board Delete Do");
 		return "redirect:/admin/boards/list";
 	}

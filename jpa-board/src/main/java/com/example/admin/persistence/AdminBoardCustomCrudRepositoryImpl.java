@@ -38,7 +38,7 @@ public class AdminBoardCustomCrudRepositoryImpl extends QuerydslRepositorySuppor
 		
 		JPQLQuery<Boards> query = from(board);
 		/** Make Select */
-		JPQLQuery<Tuple> tuple = query.select(board.idx, board.title, board.content, reply.count(), board.writer, board.createdAt, board.updatedAt);
+		JPQLQuery<Tuple> tuple = query.select(board.idx, board.title, board.content, board.writer,reply.count(), board.createdAt, board.updatedAt);
 		/** LEFT JOIN */
 		tuple.leftJoin(reply);
 		tuple.on(board.idx.eq(reply.boardIdx));

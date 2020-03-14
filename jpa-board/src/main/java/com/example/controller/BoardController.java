@@ -55,6 +55,18 @@ public class BoardController {
 		return "customer/board/view";
 	}
 	
+	@PostMapping(value="/uploadImg")
+	public String UploadImg() {
+		log.info("Upload Image");
+		return "";
+	}
+	
+	@PostMapping(value="/uploadFile")
+	public String UploadFile() {
+		log.info("upload File");
+		return "";
+	}
+	
 	@PostMapping(value="/delete")
 	public String DeleteDo() {
 		log.info("Board Delete Do");

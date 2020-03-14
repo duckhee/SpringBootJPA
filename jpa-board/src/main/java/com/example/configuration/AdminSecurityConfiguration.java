@@ -38,7 +38,7 @@ public class AdminSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		// TODO Auto-generated method stub
 		log.info("Admin Spring Security Configuration");
 		/** Admin Login Logic */
-		/*
+		
 		http.antMatcher("/admin/**")
 		.authorizeRequests()
 		.antMatchers("/admin/users/login")
@@ -64,7 +64,7 @@ public class AdminSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.maximumSessions(1)
 		.expiredUrl("/")
 		.maxSessionsPreventsLogin(false);
-		*/
+		
 		/** User Login Logic */
 		http.userDetailsService(UserSerives);
 		//super.configure(http);

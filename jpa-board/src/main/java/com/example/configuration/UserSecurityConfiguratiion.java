@@ -36,7 +36,7 @@ public class UserSecurityConfiguratiion extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers("/users/login").permitAll()
 		.antMatchers("/users/logout").permitAll()
-		.antMatchers("/boards/list").hasAnyRole("USER", "ADMIN")
+		.antMatchers("/boards/*").hasAnyRole("USER", "ADMIN")
 		.and()
 		.formLogin()
 		.loginPage("/users/login")

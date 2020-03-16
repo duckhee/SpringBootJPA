@@ -77,4 +77,10 @@ public class AdminBoardCustomCrudRepositoryImpl extends QuerydslRepositorySuppor
 		return new PageImpl<>(resultList, page, total);
 	}
 
+	@Override
+	public Boards getView(Long bno) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -39,6 +39,8 @@ public class Boards {
 	private String title;
 	@Column(name="content")
 	private String content;
+	@Column(name="cnt")
+	private Long cnt;
 	@Column(name="writer", nullable = false)
 	private String writer;
 	@CreationTimestamp

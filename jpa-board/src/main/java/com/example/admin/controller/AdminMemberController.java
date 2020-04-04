@@ -2,7 +2,7 @@ package com.example.admin.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.annotations.Parameter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

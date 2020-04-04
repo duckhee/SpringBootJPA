@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.admin.persistence.AdminBoardCustomCrudRepository;
-import com.example.admin.persistence.AdminBoardRepository;
 import com.example.domain.Boards;
 import com.example.util.PageMaker;
 import com.example.util.PageVo;
@@ -98,11 +98,10 @@ public class AdminBoardController {
 	}
 	
 	@GetMapping(value="/view")
-	public String ViewPage(HttpServletRequest request, Model model) {
+	public String ViewPage(@RequestParam(name = "bno", required = false)Long bno, Model model) {
 		log.info("Admin Board View Page");
 		/** get board Detail View use board.idx parameter Type is bno */
 		try {
-			Long bno = (long) Integer.parseInt(request.getParameter("bno"));
 			log.info("get BNO :" + bno);
 			repo.findById(bno).ifPresent(board->{
 				log.info("get Board :" + board);

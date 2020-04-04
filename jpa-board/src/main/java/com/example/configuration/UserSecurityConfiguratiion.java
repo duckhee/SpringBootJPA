@@ -31,7 +31,7 @@ public class UserSecurityConfiguratiion extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
 		log.info("User Spring Security Configuration");
-		/** Admin Login Logic */
+		/** user Login Logic */
 		/*
 		http.authorizeRequests()
 		.antMatchers("/users/login").permitAll()

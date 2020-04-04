@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.admin.persistence.AdminMemberCustomCrudRepository;
 import com.example.domain.Member;
 import com.example.domain.MemberRole;
-import com.example.user.service.SecurityUser;
 
 import lombok.extern.java.Log;
 
@@ -31,10 +31,11 @@ public class UserTests {
 	private PasswordEncoder passwordEncoder;
 	
 	@Test
+
 	public void AdminUserSignUpTests() {
 		log.info("Create Admin");
 		Member admin = new Member();
-		admin.setUserEmail("admin@co.kr");
+		admin.setUserEmail("test@co.kr");
 		admin.setUserPassword(passwordEncoder.encode("admin"));
 		admin.setUserName("AdminTest");
 		MemberRole role = new MemberRole();
@@ -55,7 +56,7 @@ public class UserTests {
 		Member user = new Member();
 		/** Update need Idx */
 		//user.setIdx(13L);
-		user.setUserEmail("test@co.kr");
+		user.setUserEmail("test1@co.kr");
 		user.setUserPassword(passwordEncoder.encode("test"));
 		user.setUserName("Tester");
 		MemberRole role = new MemberRole();
@@ -72,6 +73,7 @@ public class UserTests {
 	}
 	
 	@Test
+	@Transactional
 	public void AdminLoginTests() {
 		log.info("Login User");
 		String Search = "admin@co.kr";

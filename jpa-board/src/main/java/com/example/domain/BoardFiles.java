@@ -12,13 +12,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode(of="idx")
+@ToString
 @Entity
 @Table(name="tbl_boardFiles")
 public class BoardFiles {
@@ -33,6 +36,12 @@ public class BoardFiles {
 	
 	@Column(name="filePath", nullable = false)
 	private String path;
+	
+	@Column(name="originName", nullable = false)
+	private String originName;
+	
+	@Column(name="saveName", nullable = false)
+	private String saveName;
 	
 	//TODO Change Enum Type
 	@Column(name="fileType", nullable = false)
